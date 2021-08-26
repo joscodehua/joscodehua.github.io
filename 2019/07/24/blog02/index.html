@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"joscodehua.gitee.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="以程序为中心  数据–&gt;程序：输入，程序–&gt;数据：输出   1.创建源, 2.选择流, 3.操作, 4.释放资源">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java I&#x2F;O系统">
+<meta property="og:url" content="https://joscodehua.gitee.io/2019/07/24/blog02/index.html">
+<meta property="og:site_name" content="十五">
+<meta property="og:description" content="以程序为中心  数据–&gt;程序：输入，程序–&gt;数据：输出   1.创建源, 2.选择流, 3.操作, 4.释放资源">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-07-24T04:43:19.000Z">
+<meta property="article:modified_time" content="2021-05-10T10:30:54.000Z">
+<meta property="article:author" content="十五">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://joscodehua.gitee.io/2019/07/24/blog02/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://joscodehua.gitee.io/2019/07/24/blog02/","path":"2019/07/24/blog02/","title":"Java I/O系统"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java I/O系统 | 十五</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">十五</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">23</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80-File%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">一. File类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C-%E5%AD%97%E8%8A%82%E6%B5%81%EF%BC%9AInputStream-%E5%92%8C-OutputStream"><span class="nav-number">2.</span> <span class="nav-text">二. 字节流：InputStream 和 OutputStream</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89-%E5%AD%97%E7%AC%A6%E6%B5%81%EF%BC%9AReader-%E5%92%8C-Writer"><span class="nav-number">3.</span> <span class="nav-text">三. 字符流：Reader 和 Writer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B-%E6%95%B0%E6%8D%AE%E6%B5%81-DataInputStream-DataOutputStream"><span class="nav-number">4.</span> <span class="nav-text">四. 数据流:DataInputStream,DataOutputStream</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94-%E5%AF%B9%E8%B1%A1%E6%B5%81%EF%BC%9AObjectOutputStream%E5%92%8CObjectInputStream"><span class="nav-number">5.</span> <span class="nav-text">五. 对象流：ObjectOutputStream和ObjectInputStream</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AD-%E9%9A%8F%E6%9C%BA%E8%AF%BB%E5%8F%96%E5%86%99%E5%85%A5%E6%B5%81RandomAccessFile"><span class="nav-number">6.</span> <span class="nav-text">六. 随机读取写入流RandomAccessFile</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">十五</p>
+  <div class="site-description" itemprop="description">励志前行</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/joscodehua" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;joscodehua" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:m15991487286@163.com" title="E-Mail → mailto:m15991487286@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://joscodehua.gitee.io/2019/07/24/blog02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="十五">
+      <meta itemprop="description" content="励志前行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="十五">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java I/O系统
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-07-24 12:43:19" itemprop="dateCreated datePublished" datetime="2019-07-24T12:43:19+08:00">2019-07-24</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-05-10 18:30:54" itemprop="dateModified" datetime="2021-05-10T18:30:54+08:00">2021-05-10</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JavaSE/" itemprop="url" rel="index"><span itemprop="name">JavaSE</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <ul>
+<li><p>以程序为中心</p>
+<ul>
+<li>数据–&gt;程序：输入，程序–&gt;数据：输出</li>
+</ul>
+</li>
+<li><p>1.创建源, 2.选择流, 3.操作, 4.释放资源</p>
+<span id="more"></span>
+<h3 id="一-File类"><a href="#一-File类" class="headerlink" title="一. File类"></a>一. File类</h3></li>
+<li><p>可以表示文件位置或目录位置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">File file = new File(地址);</span><br></pre></td></tr></table></figure>
+<h3 id="二-字节流：InputStream-和-OutputStream"><a href="#二-字节流：InputStream-和-OutputStream" class="headerlink" title="二. 字节流：InputStream 和 OutputStream"></a>二. 字节流：InputStream 和 OutputStream</h3></li>
+<li><p>字节流：以字节为单位获取数据</p>
+</li>
+<li><p>文件拷贝：文件字节输入流和输出流</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public static void copy02(String srcPath, String destPath)&#123;</span><br><span class="line">    //1.创建源</span><br><span class="line">    File src =new File(srcPath);//源头</span><br><span class="line">    File dest =new File(destPath);//目的地</span><br><span class="line">    //2.选择流</span><br><span class="line">    try (InputStream is = new BufferedInputStream(new FileInputStream(src));</span><br><span class="line">            OutputStream os = new BufferedOutputStream(new FileOutputStream(dest));)&#123;</span><br><span class="line">        //3.操作</span><br><span class="line">        byte[] flush = new byte[1024];//存读到值的数组</span><br><span class="line">        int len = -1;//接受长度</span><br><span class="line">        while((len = is.read(flush)) != -1)&#123;</span><br><span class="line">            os.write(flush, 0, len);//写入读到的长度</span><br><span class="line">        &#125;</span><br><span class="line">        os.flush();</span><br><span class="line">    &#125;catch (FileNotFoundException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;catch (IOException e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>字节数组输入流<ul>
+<li>1.创建源：字节数组（不要太大）</li>
+<li>2.选择流：ByteArrayInputStream（）；</li>
+<li>3.操作</li>
+<li>4.释放资源：可以不用处理<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public static void inputTest()&#123;</span><br><span class="line">    byte[] data = &quot;fdsfsdfsdf&quot;.getBytes();</span><br><span class="line">    InputStream arris = null;</span><br><span class="line">    try &#123;</span><br><span class="line">        arris = new ByteArrayInputStream(data);</span><br><span class="line">        byte[] flush = new byte[5];</span><br><span class="line">        int len = -1;</span><br><span class="line">        while((len=arris.read(flush))!=-1)&#123;</span><br><span class="line">            String s = new String(flush, 0, len);</span><br><span class="line">            System.out.println(s);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;catch(IOException e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>字节数组输出流<ul>
+<li>1.创建源：内部维护</li>
+<li>2.选择流：不关联源</li>
+<li>3.操作</li>
+<li>4.释放资源：可以不用处理</li>
+<li>获取数据<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public static void outputTest()&#123;</span><br><span class="line">    //需要使用新增方法，所以创建ByteArrayOutputStream</span><br><span class="line">    ByteArrayOutputStream arros = null;</span><br><span class="line">    try&#123;</span><br><span class="line">        arros = new ByteArrayOutputStream();</span><br><span class="line">    String msg = &quot;fdsdsfsd&quot;;</span><br><span class="line">    byte[] data = msg.getBytes();</span><br><span class="line">    arros.write(data, 0, data.length);</span><br><span class="line">    arros.flush();</span><br><span class="line">    byte[] dest = arros.toByteArray();//获取数据使用toByteArray()</span><br><span class="line">    System.out.println(new String(dest, 0, dest.length));</span><br><span class="line">    &#125;catch(IOException e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h3 id="三-字符流：Reader-和-Writer"><a href="#三-字符流：Reader-和-Writer" class="headerlink" title="三. 字符流：Reader 和 Writer"></a>三. 字符流：Reader 和 Writer</h3><ul>
+<li><p>字符流：以字符为单位获取数据</p>
+</li>
+<li><p>文件拷贝：字符输入流和输出流</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public static void copy(String srcPath, String destPath)&#123;</span><br><span class="line">    //1.创建源</span><br><span class="line">    File src = new File(srcPath);</span><br><span class="line">    File dest = new File(destPath);</span><br><span class="line">    Reader reader = null;</span><br><span class="line">    Writer writer = null;</span><br><span class="line">    try&#123;</span><br><span class="line">        //2.选择流</span><br><span class="line">        reader = new FileReader(src);</span><br><span class="line">        writer = new FileWriter(dest);</span><br><span class="line">        char[] flush = new char[1024];</span><br><span class="line">        int len = -1;</span><br><span class="line">        //3.操作</span><br><span class="line">        while((len = reader.read(flush)) != -1)&#123;</span><br><span class="line">            writer.write(flush, 0, len);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;catch(FileNotFoundException e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;catch(IOException e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;finally&#123;</span><br><span class="line">        //4.释放资源</span><br><span class="line">        try&#123;</span><br><span class="line">            if(null != writer)</span><br><span class="line">                writer.close();</span><br><span class="line">            if(null != reader)</span><br><span class="line">                reader.close();</span><br><span class="line">        &#125;catch(IOException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="四-数据流-DataInputStream-DataOutputStream"><a href="#四-数据流-DataInputStream-DataOutputStream" class="headerlink" title="四. 数据流:DataInputStream,DataOutputStream"></a>四. 数据流:DataInputStream,DataOutputStream</h3></li>
+</ul>
+<ol>
+<li>写出后读取</li>
+<li>读取的顺序和写出一致</li>
+</ol>
+<ul>
+<li>写出<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//写出</span><br><span class="line">ByteArrayOutputStream bos = new ByteArrayOutputStream();</span><br><span class="line">DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(bos));</span><br><span class="line">dos.writeInt(10);</span><br><span class="line">dos.writeUTF(&quot;fdsa&quot;);</span><br><span class="line">dos.writeBoolean(false);</span><br><span class="line">byte[] data = bos.toByteArray();</span><br></pre></td></tr></table></figure></li>
+<li>读取<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//读取</span><br><span class="line">DataInputStream dis = new DataInputStream(new BufferedInputStream(new ByteArrayInputStream(data)));</span><br><span class="line">//读取的顺序和写出一致</span><br><span class="line">System.out.println(dis.readInt());</span><br><span class="line">System.out.println(dis.readUTF());</span><br><span class="line">System.out.println(dis.readBoolean());</span><br></pre></td></tr></table></figure>
+<h3 id="五-对象流：ObjectOutputStream和ObjectInputStream"><a href="#五-对象流：ObjectOutputStream和ObjectInputStream" class="headerlink" title="五. 对象流：ObjectOutputStream和ObjectInputStream"></a>五. 对象流：ObjectOutputStream和ObjectInputStream</h3>与数据流相同，多了readObject()和writeObject()</li>
+<li>写出和读取<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">//先写后读，读取顺序和写出一致    //自定义对象需加入   implements java.io.Serializable</span><br><span class="line">public static void writeTest()&#123;</span><br><span class="line">    try(ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(&quot;1.txt&quot;))))&#123;</span><br><span class="line">        </span><br><span class="line">        oos.writeUTF(&quot;fdsfdsf&quot;);</span><br><span class="line">        oos.writeInt(34534);</span><br><span class="line">        //自定义对象需加入   implements java.io.Serializable</span><br><span class="line">        oos.writeObject(new Date());</span><br><span class="line">        oos.writeObject(new Employee(1001, &quot;aa&quot;, 5000));</span><br><span class="line">        </span><br><span class="line">    &#125;catch(IOException e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static void readTest()&#123;</span><br><span class="line">    try(ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(&quot;1.txt&quot;))))&#123;</span><br><span class="line">        </span><br><span class="line">        System.out.println(ois.readUTF());</span><br><span class="line">        System.out.println(ois.readInt());</span><br><span class="line">        System.out.println(ois.readObject());</span><br><span class="line">        System.out.println(ois.readObject());</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">    &#125;catch(IOException e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; catch (ClassNotFoundException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>Employee对象<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">//自定义对象需加入   implements java.io.Serializable</span><br><span class="line">class Employee implements java.io.Serializable &#123;</span><br><span class="line">    private int id;</span><br><span class="line">    private transient String name;//transient指该数据不需要序列化</span><br><span class="line">    private double salary;</span><br><span class="line">    </span><br><span class="line">    public Employee(int id, String name, double salary) &#123;</span><br><span class="line">        super();</span><br><span class="line">        this.id = id;</span><br><span class="line">        this.name = name;</span><br><span class="line">        this.salary = salary;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public int getId() &#123;</span><br><span class="line">        return id;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public void setId(int id) &#123;</span><br><span class="line">        this.id = id;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public String getName() &#123;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public void setName(String name) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public double getSalary() &#123;</span><br><span class="line">        return salary;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public void setSalary(double salary) &#123;</span><br><span class="line">        this.salary = salary;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @Override</span><br><span class="line">    public String toString() &#123;</span><br><span class="line">        return &quot;Employee [id=&quot; + id + &quot;, name=&quot; + name + &quot;, salary=&quot; + salary</span><br><span class="line">                + &quot;]&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="六-随机读取写入流RandomAccessFile"><a href="#六-随机读取写入流RandomAccessFile" class="headerlink" title="六. 随机读取写入流RandomAccessFile"></a>六. 随机读取写入流RandomAccessFile</h3></li>
+<li>代码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">//分块读取</span><br><span class="line">public static void test03(String srcPath) throws IOException&#123;</span><br><span class="line">    File src = new File(srcPath);//源</span><br><span class="line">    long len = src.length();//总长度</span><br><span class="line">    int blockSize = 1024;//每块大小</span><br><span class="line">    int size = (int)Math.ceil(len/blockSize);//块数：多少块</span><br><span class="line">    int beginPos = 0;//起始位置</span><br><span class="line">    int actualSize = (int) (blockSize&gt;len?len:blockSize);//读取长度</span><br><span class="line">    </span><br><span class="line">    for(int i=0; i&lt;size; i++)&#123;</span><br><span class="line">        beginPos = i*blockSize;</span><br><span class="line">        if(i == size-1)&#123;//最后一块</span><br><span class="line">            actualSize = (int) len;</span><br><span class="line">        &#125;else&#123;//不是最后一块，总长度减少actualSize个</span><br><span class="line">            actualSize = blockSize;</span><br><span class="line">            len -= actualSize;//剩余量</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(i+&quot;--&gt;&quot;+beginPos+&quot;--&gt;&quot;+actualSize);</span><br><span class="line">        split(i, beginPos, actualSize);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>面向对象分块切割<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">public class RandTest02 &#123;</span><br><span class="line">	private File src;  //源头</span><br><span class="line">	private String destDir;   //目的地（文件夹）</span><br><span class="line">	private List&lt;String&gt; destPath;   //所有分割后文件的存储路径</span><br><span class="line">	private int blockSize;  //每块大小</span><br><span class="line">	private int size;  //块数</span><br><span class="line">	</span><br><span class="line">	//构造器</span><br><span class="line">	public RandTest02(String srcPath, String destDir, int blockSize)&#123;</span><br><span class="line">		this.src = new File(srcPath);</span><br><span class="line">		this.blockSize = blockSize;</span><br><span class="line">		this.destDir = destDir;</span><br><span class="line">		this.destPath = new ArrayList&lt;&gt;();</span><br><span class="line">		//初始化</span><br><span class="line">		init();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	//初始化</span><br><span class="line">	private void init()&#123;</span><br><span class="line">		long len = this.src.length();//总长度</span><br><span class="line">		this.size = (int) Math.ceil(len/blockSize);//块数</span><br><span class="line">		//路径，将每个文件的路径名称放入集合，第0个：dest/0-1.JPG，第1个：dest/1-1.JPG</span><br><span class="line">		for(int i=0; i&lt;size; i++)&#123;</span><br><span class="line">			this.destPath.add(this.destDir+&quot;/&quot;+i+&quot;-&quot;+this.src.getName());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	//分割，1.计算每个块的起始位置和大小 2.分割</span><br><span class="line">	public void split() throws IOException&#123;</span><br><span class="line">		long len = src.length();//总长度</span><br><span class="line">		int beginPos = 0;//起始位置</span><br><span class="line">		int actualSize = (int) (blockSize&gt;len?len:blockSize);//读取长度</span><br><span class="line">		</span><br><span class="line">		for(int i=0; i&lt;size; i++)&#123;</span><br><span class="line">			beginPos = i*blockSize;</span><br><span class="line">			if(i == size-1)&#123;//最后一块</span><br><span class="line">				actualSize = (int) len;</span><br><span class="line">			&#125;else&#123;//不是最后一块，总长度减少actualSize个</span><br><span class="line">				actualSize = blockSize;</span><br><span class="line">				len -= actualSize;</span><br><span class="line">			&#125;</span><br><span class="line">			splitDetail(i, beginPos, actualSize);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	private void splitDetail(int i,int beginPos,int actualSie ) throws IOException&#123;</span><br><span class="line">		RandomAccessFile raf1 = new RandomAccessFile(this.src, &quot;r&quot;);</span><br><span class="line">		RandomAccessFile raf2 = new RandomAccessFile(this.destPath.get(i), &quot;rw&quot;);</span><br><span class="line">		//从起始位置读</span><br><span class="line">		raf1.seek(beginPos);</span><br><span class="line">		</span><br><span class="line">		byte[] flush = new byte[1024];</span><br><span class="line">		int len = -1;</span><br><span class="line">		while((len=raf1.read(flush))!=-1)&#123;</span><br><span class="line">			if(actualSie &gt; len)&#123;</span><br><span class="line">				raf2.write(flush, 0, len);</span><br><span class="line">				actualSie -= len;</span><br><span class="line">			&#125;else&#123;</span><br><span class="line">				raf2.write(flush, 0, actualSie);</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		raf2.close();</span><br><span class="line">		raf1.close();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) throws IOException &#123;</span><br><span class="line">		RandTest02 rt = new RandTest02(&quot;1.JPG&quot;, &quot;dest&quot;, 1024*10);</span><br><span class="line">		rt.split();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+The remaining content of your post.</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/07/08/blog01/" rel="prev" title="JavaSE中的容器">
+                  <i class="fa fa-chevron-left"></i> JavaSE中的容器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/08/08/blog03/" rel="next" title="Java中的多线程">
+                  Java中的多线程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">十五</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

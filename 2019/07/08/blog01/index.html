@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"joscodehua.gitee.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="概述：容器包括Collection和Map。Collection存储对象，Map存储键值对。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaSE中的容器">
+<meta property="og:url" content="https://joscodehua.gitee.io/2019/07/08/blog01/index.html">
+<meta property="og:site_name" content="十五">
+<meta property="og:description" content="概述：容器包括Collection和Map。Collection存储对象，Map存储键值对。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-07-08T02:25:28.000Z">
+<meta property="article:modified_time" content="2021-05-10T10:30:54.000Z">
+<meta property="article:author" content="十五">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://joscodehua.gitee.io/2019/07/08/blog01/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://joscodehua.gitee.io/2019/07/08/blog01/","path":"2019/07/08/blog01/","title":"JavaSE中的容器"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaSE中的容器 | 十五</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">十五</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">23</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80-Collection%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.</span> <span class="nav-text">一. Collection接口</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-List%E6%8E%A5%E5%8F%A3%EF%BC%9A%E6%9C%89%E5%BA%8F%E3%80%81%E5%8F%AF%E9%87%8D%E5%A4%8D%E7%9A%84%E5%AE%B9%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">1. List接口：有序、可重复的容器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Set%E6%8E%A5%E5%8F%A3%EF%BC%9A%E6%97%A0%E5%BA%8F%E3%80%81%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E3%80%82Set%E5%8A%A0%E5%85%A5%E5%85%83%E7%B4%A0%E5%AE%9E%E9%99%85%E4%B8%8A%E6%98%AF%E6%8A%8A%E5%85%83%E7%B4%A0%E6%94%BE%E5%85%A5Map%E7%9A%84Key%E5%A4%84"><span class="nav-number">1.2.</span> <span class="nav-text">2. Set接口：无序、不可重复。Set加入元素实际上是把元素放入Map的Key处</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C-Map%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.</span> <span class="nav-text">二. Map接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89-%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">三. 迭代器</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">十五</p>
+  <div class="site-description" itemprop="description">励志前行</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/joscodehua" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;joscodehua" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:m15991487286@163.com" title="E-Mail → mailto:m15991487286@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://joscodehua.gitee.io/2019/07/08/blog01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="十五">
+      <meta itemprop="description" content="励志前行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="十五">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaSE中的容器
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-07-08 10:25:28" itemprop="dateCreated datePublished" datetime="2019-07-08T10:25:28+08:00">2019-07-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-05-10 18:30:54" itemprop="dateModified" datetime="2021-05-10T18:30:54+08:00">2021-05-10</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JavaSE/" itemprop="url" rel="index"><span itemprop="name">JavaSE</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>概述：容器包括Collection和Map。Collection存储对象，Map存储键值对。</p>
+<span id="more"></span>
+<h4 id="一-Collection接口"><a href="#一-Collection接口" class="headerlink" title="一. Collection接口"></a>一. Collection接口</h4><p>Collection包括两个子接口，List、Set</p>
+<hr>
+<h5 id="1-List接口：有序、可重复的容器"><a href="#1-List接口：有序、可重复的容器" class="headerlink" title="1. List接口：有序、可重复的容器"></a>1. List接口：有序、可重复的容器</h5><ul>
+<li>ArrayList：使用数组实现存储，<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Object[] elementDate;<span class="comment">//定义Object数组和长度size</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFALT_CAPACITY=<span class="number">10</span>;<span class="comment">//设定初始化长度10</span></span><br></pre></td></tr></table></figure>
+add()方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(E e)</span></span>&#123;</span><br><span class="line"><span class="comment">//数组扩容</span></span><br><span class="line"><span class="keyword">if</span>(size == elementDate.length)&#123;</span><br><span class="line">	Object[] newarr = <span class="keyword">new</span> Object[elementDate.length(elementDate.length&gt;&gt;<span class="number">1</span>)];<span class="comment">//10--&gt;10+(10/2)</span></span><br><span class="line">	System.arraycopy(elementDate, <span class="number">0</span>, newarr, <span class="number">0</span>, elementDate.length);</span><br><span class="line">	elementDate = newarr;</span><br><span class="line">&#125;</span><br><span class="line">elementDate[size++] = e;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>LinkedList：使用双向链表实现存储</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="class"><span class="keyword">class</span>  <span class="title">Node</span> </span>&#123;</span><br><span class="line">	Node  previous;     <span class="comment">//前一个节点</span></span><br><span class="line">	Object  element;    <span class="comment">//本节点保存的数据</span></span><br><span class="line">	Node  next;         <span class="comment">//后一个节点</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Vector：用数组实现的List，线程安全</p>
+<h5 id="2-Set接口：无序、不可重复。Set加入元素实际上是把元素放入Map的Key处"><a href="#2-Set接口：无序、不可重复。Set加入元素实际上是把元素放入Map的Key处" class="headerlink" title="2. Set接口：无序、不可重复。Set加入元素实际上是把元素放入Map的Key处"></a>2. Set接口：无序、不可重复。Set加入元素实际上是把元素放入Map的Key处</h5></li>
+<li><p>HashSet：无序</p>
+</li>
+<li><p>TreeSet：内部进行排序（使用compareTo()方法）</p>
+<h4 id="二-Map接口"><a href="#二-Map接口" class="headerlink" title="二. Map接口"></a>二. Map接口</h4><p>存储键(key)-值(value) 对。Map的实现类包括：HashMap、TreeMap、HashTable、Properties</p>
+</li>
+<li><p>HashMap：键不能重复，如果发生重复，新的键值对会替换旧的键值对</p>
+</li>
+<li><p>HashTable</p>
+<h4 id="三-迭代器"><a href="#三-迭代器" class="headerlink" title="三. 迭代器"></a>三. 迭代器</h4></li>
+</ul>
+<ol>
+<li>迭代器遍历List<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line"><span class="keyword">for</span> (Iterator&lt;String&gt; iter = list.iterator(); iter.hasNext();) &#123;</span><br><span class="line">        String temp = iter.next();</span><br><span class="line">        System.out.print(temp + <span class="string">&quot;\t&quot;</span>);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></li>
+<li>迭代器遍历Set<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; set = <span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line"><span class="keyword">for</span> (Iterator&lt;String&gt; iter = set.iterator(); iter.hasNext();) &#123;</span><br><span class="line">        String temp = iter.next();</span><br><span class="line">        System.out.print(temp + <span class="string">&quot;\t&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>迭代器遍历Map<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line"><span class="comment">//方法一</span></span><br><span class="line">Set&lt;Entry&lt;String, String&gt;&gt; set= map.entrySet();</span><br><span class="line"><span class="keyword">for</span> (Iterator&lt;Entry&lt;String, String&gt;&gt; iterator = set.iterator(); iterator.hasNext();) &#123;</span><br><span class="line">        Entry&lt;String, String&gt; entry = iterator.next();</span><br><span class="line">        System.out.println(entry.getKey() + <span class="string">&quot;--&quot;</span> + entry.getValue());</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//方法二</span></span><br><span class="line">Set&lt;String&gt; ss = map.keySet();</span><br><span class="line"><span class="keyword">for</span> (Iterator&lt;String&gt; iterator = ss.iterator(); iterator.hasNext();) &#123;</span><br><span class="line">        String key = iterator.next();</span><br><span class="line">        System.out.println(key + <span class="string">&quot;--&quot;</span> + map.get(key));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/07/08/blog08/" rel="prev" title="SSM中th:fragment使用">
+                  <i class="fa fa-chevron-left"></i> SSM中th:fragment使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/24/blog02/" rel="next" title="Java I/O系统">
+                  Java I/O系统 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">十五</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

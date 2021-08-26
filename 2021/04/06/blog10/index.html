@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"joscodehua.gitee.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="链路：从一个结点到相邻结点的一段物理线路（有线或无线），中间没有交换结点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据链路层">
+<meta property="og:url" content="https://joscodehua.gitee.io/2021/04/06/blog10/index.html">
+<meta property="og:site_name" content="十五">
+<meta property="og:description" content="链路：从一个结点到相邻结点的一段物理线路（有线或无线），中间没有交换结点。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://joscodehua.gitee.io/img/PPP.jpg">
+<meta property="og:image" content="https://joscodehua.gitee.io/img/Manchester.jpg">
+<meta property="og:image" content="https://joscodehua.gitee.io/img/MAC.jpg">
+<meta property="og:image" content="https://joscodehua.gitee.io/img/Hub.jpg">
+<meta property="og:image" content="https://joscodehua.gitee.io/img/ThreeEthernet.jpg">
+<meta property="og:image" content="https://joscodehua.gitee.io/img/ExtendedEthernet.jpg">
+<meta property="og:image" content="https://joscodehua.gitee.io/img/ExchangTable.jpg">
+<meta property="article:published_time" content="2021-04-05T20:01:37.000Z">
+<meta property="article:modified_time" content="2021-05-21T12:24:22.000Z">
+<meta property="article:author" content="十五">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://joscodehua.gitee.io/img/PPP.jpg">
+
+
+<link rel="canonical" href="https://joscodehua.gitee.io/2021/04/06/blog10/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://joscodehua.gitee.io/2021/04/06/blog10/","path":"2021/04/06/blog10/","title":"数据链路层"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数据链路层 | 十五</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">十五</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">23</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%B8%89%E4%B8%AA%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">1.三个基本问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E5%B0%81%E8%A3%85%E6%88%90%E5%B8%A7"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 封装成帧</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E9%80%8F%E6%98%8E%E4%BC%A0%E8%BE%93"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 透明传输</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-%E5%B7%AE%E9%94%99%E6%A3%80%E9%AA%8C"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 差错检验</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%82%B9%E5%AF%B9%E7%82%B9%E5%8D%8F%E8%AE%AEPPP"><span class="nav-number">2.</span> <span class="nav-text">2.点对点协议PPP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-PPP%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%B8%A7%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 PPP协议的帧格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-CSMA-CD%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.</span> <span class="nav-text">3.CSMA&#x2F;CD协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-MAC%E5%9C%B0%E5%9D%80"><span class="nav-number">4.</span> <span class="nav-text">4.MAC地址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-MAC%E5%B8%A7%E7%9A%84%E6%A0%BC%E5%BC%8F"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 MAC帧的格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%89%A9%E5%B1%95%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="nav-number">5.</span> <span class="nav-text">5.扩展的以太网</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-%E7%89%A9%E7%90%86%E5%B1%82%E6%89%A9%E5%B1%95%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 物理层扩展以太网</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E6%89%A9%E5%B1%95%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 数据链路层扩展以太网</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">十五</p>
+  <div class="site-description" itemprop="description">励志前行</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/joscodehua" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;joscodehua" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:m15991487286@163.com" title="E-Mail → mailto:m15991487286@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://joscodehua.gitee.io/2021/04/06/blog10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="十五">
+      <meta itemprop="description" content="励志前行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="十五">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据链路层
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-06 04:01:37" itemprop="dateCreated datePublished" datetime="2021-04-06T04:01:37+08:00">2021-04-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-05-21 20:24:22" itemprop="dateModified" datetime="2021-05-21T20:24:22+08:00">2021-05-21</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/" itemprop="url" rel="index"><span itemprop="name">基础理论</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>链路</strong>：从一个结点到相邻结点的一段物理线路（有线或无线），中间没有交换结点。<span id="more"></span><br><strong>数据链路</strong>：在链路加上相关通信协议。<br>&nbsp;&nbsp;&nbsp;&nbsp;数据链路层把网络层交下来的IP数据包封装成帧发送到链路上，把接收到的帧中的数据上交给网络层。</p>
+<h3 id="1-三个基本问题"><a href="#1-三个基本问题" class="headerlink" title="1.三个基本问题"></a>1.三个基本问题</h3><h4 id="1-1-封装成帧"><a href="#1-1-封装成帧" class="headerlink" title="1.1 封装成帧"></a>1.1 封装成帧</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据前后添加首部和尾部。使用<strong>帧界定符</strong>，接收端收到只有首部开始符SOH(Start Of Header)十六进制01，没有传输结束符EOT(End Of Transmission)十六进制04，表示数据是个不完整的帧，必须丢弃。后面收到的数据有明确的帧界定符（SOH，EOT）是完整的帧。</p>
+<h4 id="1-2-透明传输"><a href="#1-2-透明传输" class="headerlink" title="1.2 透明传输"></a>1.2 透明传输</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;帧的数据是文本文件时，数据部分不会出现像SOH或EOT。而二进制文件时，数据部分可能会出现和SOH或EOT一样。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;解决方法:发送端的数据链路层在数据中出现“SOH”或“EOT”的前面插入<strong>转义字符</strong>“ESC”0x1B（十六进制1B）。接收端的数据链路层在送网络层前删除转义字符。若转义字符也出现在数据中，在转义字符前插入转义字符。</p>
+<h4 id="1-3-差错检验"><a href="#1-3-差错检验" class="headerlink" title="1.3 差错检验"></a>1.3 差错检验</h4><p><strong>比特差错</strong>：传输过程出现1变成0或0变成1的差错。<br><strong>误码率</strong>：错误比特占总数比特的比率。<br><strong>循环冗余检测</strong>CRC(Cyclic redundancy Check):在数据M后面添加供差错检测的n位冗余码，构成帧发送。</p>
+<h3 id="2-点对点协议PPP"><a href="#2-点对点协议PPP" class="headerlink" title="2.点对点协议PPP"></a>2.点对点协议PPP</h3><p>接收方每收到一个帧，就进行CRC检验。<strong>PPPoE</strong>把PPP帧再封装在以太网帧中。</p>
+<h4 id="2-1-PPP协议的帧格式"><a href="#2-1-PPP协议的帧格式" class="headerlink" title="2.1 PPP协议的帧格式"></a>2.1 PPP协议的帧格式</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PPP帧首部和尾部为四个字段和两个字段。首部一字段和尾部二字段是标志字段F(Flag)，规定为0x7E，表示帧的开始或结束。首部地址字段A规定为0xFF，控制字段C规定为0x03。首部第四个字段为2字节的协议字段，为0x0021时，信息字段为IP数据报；为0xC021时，链路控制协议LCP；为0x8021时，网络层的控制数据，尾部第一个字段（2字节）是使用CRC的帧检验序列FCS。<br><img src="/img/PPP.jpg" alt="PPP帧的格式"><br><strong>字节填充</strong>：为避免信息字段和标志字段相同，PPP使用异步传输时，转义字符为0x7D。信息字段每出现0x7E转变为2字节序列(0x7D,0x5E)，出现0x7D转变为2字节序列(0x7D,0x5D)。<br><strong>零比特填充</strong>：发现5个连续1，立即填充一个0。</p>
+<h3 id="3-CSMA-CD协议"><a href="#3-CSMA-CD协议" class="headerlink" title="3.CSMA/CD协议"></a>3.CSMA/CD协议</h3><p><strong>总线</strong>的特点：一台计算机发送数据时，总线上的所有计算机都能检测到这个数据（广播通信方式）。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以太网提供的服务是尽最大努力的交付，即不可靠的交付。对差错帧是否重传由更高层决定，以太网也不知道是重传帧。同一时间只允许一台计算机发送数据。使用CSMA/CD协议载波监听多点接入/碰撞检测。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以太网发送的数据都使用曼切斯特(Manchester)编码的信号。<br><img src="/img/Manchester.jpg" alt="曼彻斯特编码"></p>
+<p>CSMA/CD协议的要点：<br><strong>多点接入</strong>说明是总线型网络。<br><strong>载波监听</strong>电子技术检测总线上有没有其他计算机也在发送，检测信道。<br><strong>碰撞检测</strong>边发送边监听，即适配器边发送数据边检测信道的信号电压变化情况。信号电压超过一定的门限值，就认为产生了碰撞。<br>CSMA/CD协议只能进行<strong>半双工通信</strong>。</p>
+<h3 id="4-MAC地址"><a href="#4-MAC地址" class="headerlink" title="4.MAC地址"></a>4.MAC地址</h3><h4 id="4-1-MAC帧的格式"><a href="#4-1-MAC帧的格式" class="headerlink" title="4.1 MAC帧的格式"></a>4.1 MAC帧的格式</h4><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以太网V2的MAC帧由5个字段组成,前两字段为6字节的目的地址和源地址,第三个字段为2字节的类型字段,标志上一层使用什么协议.第四字段是数据字段,长度子啊46到1500字节,最后一字段是4字节的帧检验序列FCS<br><img src="/img/MAC.jpg" alt="以太网MAC帧格式"></p>
+<h3 id="5-扩展的以太网"><a href="#5-扩展的以太网" class="headerlink" title="5.扩展的以太网"></a>5.扩展的以太网</h3><h4 id="5-1-物理层扩展以太网"><a href="#5-1-物理层扩展以太网" class="headerlink" title="5.1 物理层扩展以太网"></a>5.1 物理层扩展以太网</h4><p>主机使用光纤和一对光纤调制解调器连接到集线器，使以太网的距离扩大。<br><img src="/img/Hub.jpg" alt="使用光纤和两个光纤调制解调器连接集线器"><br>使用多个集线器,连接成覆盖范围更大的多级星型结构的以太网。<br><img src="/img/ThreeEthernet.jpg" alt="三个独立的以太网"><br><img src="/img/ExtendedEthernet.jpg" alt="一个扩展的以太网"></p>
+<h4 id="5-2-数据链路层扩展以太网"><a href="#5-2-数据链路层扩展以太网" class="headerlink" title="5.2 数据链路层扩展以太网"></a>5.2 数据链路层扩展以太网</h4><p><strong>网桥</strong>,根据MAC帧的目的地址进行转发和过滤<br><strong>以太网交换机</strong>实质是一个多接口的网桥,全双工方式,具有并行性.其内部的交换表(地址表),是通过自学习算法建立起来的.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A向B发送一帧,从接口1进入.交换机收到帧后,查找交换表,找不到B.交换机把帧的源地址A和接口1写入交换表,向除接口1外接口广播这个帧.C和D会丢弃帧,B才收下.<br><img src="/img/ExchangTable.jpg" alt="以太网交换机的交换表"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"><i class="fa fa-tag"></i> 计算机网络</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/09/06/blog05/" rel="prev" title="数据结构的基本概念">
+                  <i class="fa fa-chevron-left"></i> 数据结构的基本概念
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/04/06/blog06/" rel="next" title="Hugo+GitHub搭建博客">
+                  Hugo+GitHub搭建博客 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">十五</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

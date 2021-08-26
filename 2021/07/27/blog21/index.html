@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"joscodehua.gitee.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="操作系统中管理分层存储器体系的部分称为存储管理器（memory manager）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="存储管理">
+<meta property="og:url" content="https://joscodehua.gitee.io/2021/07/27/blog21/index.html">
+<meta property="og:site_name" content="十五">
+<meta property="og:description" content="操作系统中管理分层存储器体系的部分称为存储管理器（memory manager）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://joscodehua.gitee.io/img/ExtraMemory.jpg">
+<meta property="og:image" content="https://joscodehua.gitee.io/img/Bitmap.jpg">
+<meta property="og:image" content="https://joscodehua.gitee.io/img/MMU.jpg">
+<meta property="og:image" content="https://joscodehua.gitee.io/img/VirtualAddress.jpg">
+<meta property="og:image" content="https://joscodehua.gitee.io/img/MMU01.jpg">
+<meta property="og:image" content="https://joscodehua.gitee.io/img/PageTable.jpg">
+<meta property="article:published_time" content="2021-07-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-07-28T06:04:03.044Z">
+<meta property="article:author" content="十五">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://joscodehua.gitee.io/img/ExtraMemory.jpg">
+
+
+<link rel="canonical" href="https://joscodehua.gitee.io/2021/07/27/blog21/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://joscodehua.gitee.io/2021/07/27/blog21/","path":"2021/07/27/blog21/","title":"存储管理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>存储管理 | 十五</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">十五</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">23</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%97%A0%E5%AD%98%E5%82%A8%E5%99%A8%E6%8A%BD%E8%B1%A1"><span class="nav-number">1.</span> <span class="nav-text">1. 无存储器抽象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AD%98%E5%82%A8%E5%99%A8%E6%8A%BD%E8%B1%A1%EF%BC%9A%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="nav-number">2.</span> <span class="nav-text">2. 存储器抽象：地址空间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 交换技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-%E7%A9%BA%E9%97%B2%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 空闲内存管理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="nav-number">3.</span> <span class="nav-text">3. 虚拟内存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E5%88%86%E9%A1%B5"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 分页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-%E9%A1%B5%E8%A1%A8"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 页表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="nav-number">3.3.</span> <span class="nav-text">4. 页面置换算法</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">十五</p>
+  <div class="site-description" itemprop="description">励志前行</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/joscodehua" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;joscodehua" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:m15991487286@163.com" title="E-Mail → mailto:m15991487286@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://joscodehua.gitee.io/2021/07/27/blog21/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="十五">
+      <meta itemprop="description" content="励志前行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="十五">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          存储管理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-27 00:00:00" itemprop="dateCreated datePublished" datetime="2021-07-27T00:00:00+08:00">2021-07-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-07-28 14:04:03" itemprop="dateModified" datetime="2021-07-28T14:04:03+08:00">2021-07-28</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/" itemprop="url" rel="index"><span itemprop="name">基础理论</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>操作系统中管理分层存储器体系的部分称为存储管理器（memory manager）。</p>
+<span id="more"></span>
+<h3 id="1-无存储器抽象"><a href="#1-无存储器抽象" class="headerlink" title="1. 无存储器抽象"></a>1. 无存储器抽象</h3><p>早期大型计算机都没有存储器抽象。每一个程序都直接访问物理内存。在这种情况下，同时运行两个程序是不可能的。</p>
+<h3 id="2-存储器抽象：地址空间"><a href="#2-存储器抽象：地址空间" class="headerlink" title="2. 存储器抽象：地址空间"></a>2. 存储器抽象：地址空间</h3><h4 id="2-1-概念"><a href="#2-1-概念" class="headerlink" title="2.1 概念"></a>2.1 概念</h4><p>地址空间是一个进程可用于寻址内存的一套地址集合。每 个进程都有一个自己的地址空间，且独立于其他进程的地址空间。</p>
+<ul>
+<li>基址寄存器和界限寄存器<ul>
+<li>当一个进程运行 时，程序的<strong>起始物理地址</strong>装载到基址寄存器中，程序的<strong>长度</strong>装载到界限寄存器中。</li>
+<li>每次一个进程访问内存，取一条指令、写一个数据字，CPU硬件在把地址发送到内存总线前，自动把基址值加到进程发出的地址值上，并检查程序提供的地址是否等于或大于界限寄存器里的值。如果访问的地址超过了界限，会产生错误并中止访问。</li>
+<li>使用基址寄存器和界限寄存器重定位的缺点是，每次访问内存都需要进行加法和比较运算。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-2-交换技术"><a href="#2-2-交换技术" class="headerlink" title="2.2 交换技术"></a>2.2 交换技术</h4><ul>
+<li>处理内存超载的通用方法：<ul>
+<li>交换（swapping）技术：把一个进程完整调入内存，使该进程运行一段时间，然后把它存回磁盘。空闲进程主要存储在磁盘上，不运行时就不会 占用内存。</li>
+<li>是虚拟内存（virtual memory），使程序在只有一部分被调入内存的情况下运行。</li>
+</ul>
+</li>
+<li>内存紧缩（memory compaction）：通过把所有的进程尽可能向下移动，将这些小的空闲区合成一大块。耗费大量的CPU时间。</li>
+<li>进程空间试图增长时，若该进程与一个空闲区相邻，把该空闲区分配给该进程；若进程相邻的是另一个进程，则把该进程移到内存中一个足够大的 域中去，或把一个或多个进程交换出去。</li>
+<li>若大部分进程在运行时都要增长，为进程分配一些额外的内存，进程被换出到磁盘上时，只交换进程实际上使用的内存中的内容。<br><img src="/img/ExtraMemory.jpg" alt="为进程增长预留空间"></li>
+</ul>
+<h4 id="2-3-空闲内存管理"><a href="#2-3-空闲内存管理" class="headerlink" title="2.3 空闲内存管理"></a>2.3 空闲内存管理</h4><p> 在动态分配内存时，操作系统必须对其进行管理，有两种方式跟踪内存使用情况：位图和空闲链表。</p>
+<ol>
+<li>使用位图的存储管理<br> 使用位图方法时，内存可能被划分成小到几个字或大到几千字节的分配单元。每个分配单元对应于位图中的一位，0表示空闲，1表示占用。<br> <img src="/img/Bitmap.jpg" alt="一块内存区及其对应的位图"><ul>
+<li>分配单元越小，位图越大。若进程的大小不是分配单元的整数倍，那么在最后一个分配单元中就会有一定数量的内存被浪费了。</li>
+</ul>
+</li>
+<li>使用链表的存储管理<br>维护一个记录<strong>已分配内存段</strong>和<strong>空闲内存段</strong>的链表。其中链表中的一个结点包含一个进程或两个进程间的一个空的空闲区。链表中的每一个结点都包含以下域：空闲区（H）或进程（P）的指示标志、起始地址、长度和指向下一结点的指针。</li>
+</ol>
+<ul>
+<li>当按照地址顺序在链表中存放进程和空闲区时，有几种算法可以用来为创建的进程（或从磁盘换入的已存在的进程）分配内存。<ul>
+<li>首次适配 （first fit）算法。存储管理器沿着段链表进行搜索，直到找到一个足够大的空闲区。</li>
+<li>下次适配（next fit）算法。每次找到合适的空闲区时都记录当时的位置，以便在下次寻找空闲区时从上次结束的地方开始搜索。</li>
+<li>最佳适配（best fit）算法。搜索整个链表（从开始到结束），找出能够容纳进程的最小的空闲区。最佳适配算法要搜索整个链表，所以它要比首次适配算法慢，它会产生大量无用的小空闲区。</li>
+<li>最差适配（worst fit）算法。分配最大的可用空闲区，使新的空闲区比较大从而可以继续使用。</li>
+<li>快速适配（quick fit）算法。为常用大小的空闲区维护单独的链表。</li>
+</ul>
+</li>
+<li>如果为进程和空闲区维护各自独立的链表，分配速度的提高但代价就是增加复杂度和内存释放速度变慢，因为必须将一个回收的段从进程链表中删除并插入空闲区链表。</li>
+</ul>
+<h3 id="3-虚拟内存"><a href="#3-虚拟内存" class="headerlink" title="3. 虚拟内存"></a>3. 虚拟内存</h3><p>程序往往大到内存无法容纳，且系统能够支持多个程序同时运行，即使内存可以满足其中单独一个程序的需要，但总体来看，它们仍然超出了内存大小。</p>
+<ol>
+<li>把程序分割成许多片段，称为覆盖（overlay）。将覆盖管理模块装入内存，该管理模块立即装入并运行覆盖0。执行完成后，覆盖0通知管理模块装入覆盖1，或者占用覆盖0的上方位置（如果有空间），或者占用覆 盖0（如果没有空间）。</li>
+<li>虚拟内存（virtual memory）。每个程序拥有自己的地址空间，被分割成多个块，每一块称作一页或页面（page）。每一页有连续的 地址范围。这些页被映射到物理内存，但并不是所有的页都必须在内存中才能运行程序。当程序引用到一部分在物理内存中的地址空间时，由硬件立刻执行必要的映射。当程序引用到一部分不在物理内存中的地址空间时，由操作系统负责将缺失的部分装入物理内存并重新执行失败的指令。</li>
+</ol>
+<ul>
+<li>虚拟内存是对基址寄存器和界限寄存器的一种综合。</li>
+</ul>
+<h4 id="3-1-分页"><a href="#3-1-分页" class="headerlink" title="3.1 分页"></a>3.1 分页</h4><p>大部分虚拟内存系统中都使用一种称为分页（paging）的技术。</p>
+<ul>
+<li>由程序产生的这些地址称为虚拟地址（virtual address），构成了一个虚拟地址空间（virtual address space）。在没有虚拟内存的计算机上，系统直接将虚拟地址送到内存总线上；在虚使用拟内存的情况下，虚拟地址被送到内存管理单 元（Memory Management Unit，MMU），MMU把虚拟地址映射为物理内存地址。<br><img src="/img/MMU.jpg" alt="MMU的位置和功能"></li>
+<li>这台计算机只有32KB的物理内存，因此，虽然 可以编写64KB的程序，但它们却不能被完全调入内存运行。在磁盘上必须有一个可以大到64KB的程序核心 映像的完整副本，以保证程序片段在需要时能被调入内存。<br><img src="/img/VirtualAddress.jpg" alt="虚拟地址与物理内存的映射关系"></li>
+<li>虚拟地址空间按照固定大小划分为<strong>页面</strong>（page），物理内存中对应的单元称为<strong>页框</strong>（page frame），页面和页框的大小通常是一样的。对应于64KB的虚拟地址空间和32KB的物理内存，我们得到16个虚拟页面和8个页框。</li>
+<li>将虚拟地址0送到MMU。MMU看到虚拟地址落在页面0（0～4095），页面对应的是页框2（8192～12 287），MMU把地址变换为8192，并把地址8192送到总线上。内存只看到一个读或写地址8192的请求并执行它。MMU把0～4095的虚拟地址映射到 了8192～12 287的物理地址。</li>
+<li>虚拟地址8196（二进制是0010000000000100）用MMU映射机制进行映射，输入的16位虚拟地址被分为4位的页号和12位的偏移量。4位的页号可以表 示16个页面，12位的偏移可以为一页内的全部4096个字节编址。<br><img src="/img/MMU01.jpg" alt="16个4KB页面下MMU的内部操作"></li>
+<li>可用页号作为页表（page table）的索引，得出对应页框号。“在/不在”位是0，则将引起一个操作系统陷阱；是1，则将页框号复制到输出寄存器的高3位中，再加上低12位偏移量，构成15位的物理地址。输出寄存器的内容随即被作为物理地址送到内存总线。</li>
+</ul>
+<h4 id="3-2-页表"><a href="#3-2-页表" class="headerlink" title="3.2 页表"></a>3.2 页表</h4><p>虚拟地址被分成<strong>虚拟页号</strong>（高位部分）和<strong>偏移量</strong>（低位部分）两部分。例如，对于16位地址和4KB的页面大小，高4位可以指定16个虚拟页面 中的一页，而低12位接着确定了所选页面中的字节偏移量（0～4095）。</p>
+<ul>
+<li>虚拟页号可用做页表的索引，以找到该虚拟页面对应的页表项，页表项可以找到页框号，把页框号拼接到偏移量的高位端，形成送往内存的物理地址。</li>
+<li>页表的目的是把虚拟页面映射为页框。从数学角度说，页表是一个函数，它的参数是虚拟页号，结果是物理页框号。</li>
+</ul>
+<ol>
+<li>页表项的结构<br>最重要的域是页框号。“在/不在”位，是1时表示该表项是有效的；是0，则虚拟页面不在内存中，引起缺页中断。<br><img src="/img/PageTable.jpg" alt="页表项"><ul>
+<li>“保护”（protection）位指出一个页允许什么类型的访问。只有一位，0表示读/写，1表示只读；三位，各位分别对应是否启用读、写、执行该页面。</li>
+<li>修改”（modified）位和“访问”（referenced）位在操作系统重新分配页框时是非常有用的。如果页面已经被修改过，则必须把它写回磁盘；没有被修改过，则只简单地把它丢弃，因为磁盘上的副本仍然是有效的。</li>
+<li>被访问时设置访问位。</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>虚拟内存的实现，是将虚拟地址空间分解成页，并将每一页映射到物理内存的某个页框或者（暂时）解除映射。</li>
+</ul>
+<h4 id="4-页面置换算法"><a href="#4-页面置换算法" class="headerlink" title="4. 页面置换算法"></a>4. 页面置换算法</h4><p>缺页中断时，在内存中选择一个页面将其换出内存，为即将调入的页面腾出空间。页面已经被修改过，就必须把它写回磁盘以更新该页面在磁盘上的副本； 没有被修改过，不需要回写，直接用调入的页面覆盖掉被淘汰的页面。</p>
+<ul>
+<li>页面置换，每次都选择不常使用的页面会提升系统的性能。如果一个被频繁使用的页面被置换出内存，很可能它在很短时间内又要被调入内存，这会带来 不必要的开销。</li>
+</ul>
+<ol>
+<li>最优页面置换算法<br>最优页面置换算法规定应该置换标记最大的页面。如果一个页面在800万条，另外一个页面在600万条指令内不会被使用，则置换前一个页面，算法唯一的问题就是它是无法实现的。</li>
+<li>最近未使用页面置换算法<br>系统为每一页面设置了两个状态位。当页面被访问（读或写）时设置R位；当页面（即修改页面）被写入时设置M位。<ul>
+<li>NRU（Not Recently Used，最近未使用）算法随机地从类编号最小的非空类中挑选一个页面淘汰之。</li>
+</ul>
+</li>
+<li>先进先出页面置换算法<br>FIFO（First-In First-Out，先进先出）算法，操作系统维护一个所有当前在内存中的页面的链表，最新进入的页面放在表尾，最久进入的页面放在表头。当发生缺页中断时，淘汰表头的页面并把新调入的页面加 到表尾。</li>
+<li>第二次机会页面置换算法<br>第二次机会（second chance）算法：检查最老页面的R位。是0，这个页面既老又没有被使用，可以立刻置换掉；是1，就将R位清 0，并把该页面放到链表的尾端，修改它的装入时间使它就像刚装入的一样，然后继续搜索。<br>第二次机会算法就是寻找一个最近的时钟间隔以来没有被访问过的页面。</li>
+<li>时钟页面置换算法<br>把所有的页面都保存在一个类似钟面的环形链表中，一个表针指向最老的页面。缺页中断时，先检查表针指向的页面，它的R位是0就淘汰该页面，把新的页面插入这个位置，表针前移一个位置；R位是1就清除R位并把表针前移一个位置，重复这个过程直到 找到了一个R位为0的页面为止。</li>
+<li>最近最少使用页面置换算法<br>LRU（Least Recently Used，最近最少使用）页面置换算法：缺页中断发生时，置换未使用时间最长的页面。<ul>
+<li>需要在内存中维护一个所有页面的链表，最近最多使用的页面在表头，最近最少使用的页面在表尾。每次访问内存时都必须要更新 整个链表。在链表中找到一个页面，删除它，然后把它移动到表头是一个非常费时的操作。</li>
+<li>使用特殊硬件实现LRU的方法，要求硬件有一个64位计数器C，每条指令执行完后自动加1，在每次访问内存后，将当前的C值保存到被访问页面的页表项中。发生缺页中断，表项中计数器的值，找到值最小的一个页面。</li>
+</ul>
+</li>
+<li>工作集页面置换算法<br>一个进程当前正在使用的页面的集合称为它的工作集（working set）。<ul>
+<li>整个工作集都被装入到了内存中，在运行到下一运行阶段之前，不会产生很多缺页中断。若内存太小而无法容纳下整个工作集，那么进程的运行过程中会产生大量的缺页中断，运行速度也会变得很缓慢，只需要几个纳秒就能执行完一条指令，需要 十毫秒才能从磁盘上读入一个页面。</li>
+<li>若每执行几条指令程序就发生一次缺页中断，那么就称这个程序发生了颠簸（thrashing）。</li>
+</ul>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"><i class="fa fa-tag"></i> 操作系统</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/25/blog20/" rel="prev" title="工厂方法模式和抽象工厂模式">
+                  <i class="fa fa-chevron-left"></i> 工厂方法模式和抽象工厂模式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/28/blog22/" rel="next" title="代理模式">
+                  代理模式 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">十五</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
