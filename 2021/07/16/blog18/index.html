@@ -19,40 +19,40 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"joscodehua.gitee.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"joscodehua.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="1. 运输层协议概述1.1 进程间通信从IP层来说，通信的两端是两台主机。  通信真正的端点是主机中的进程，端到端的通信是应用进程之间的通信。 复用：发送方不同应用进程可以用同一运输层协议传送数据。 分用：接收方的运输层剥去报文的首部把数据正确交付目的应用进程。 网络层为主机之间提供逻辑通信，运输层为应用进程之间提供端到端的逻辑通信。 运输层包括面向连接的TCP和无连接的UDP两种运输协议，采用T">
 <meta property="og:type" content="article">
 <meta property="og:title" content="运输层">
-<meta property="og:url" content="https://joscodehua.gitee.io/2021/07/16/blog18/index.html">
+<meta property="og:url" content="https://joscodehua.github.io/2021/07/16/blog18/index.html">
 <meta property="og:site_name" content="十五">
 <meta property="og:description" content="1. 运输层协议概述1.1 进程间通信从IP层来说，通信的两端是两台主机。  通信真正的端点是主机中的进程，端到端的通信是应用进程之间的通信。 复用：发送方不同应用进程可以用同一运输层协议传送数据。 分用：接收方的运输层剥去报文的首部把数据正确交付目的应用进程。 网络层为主机之间提供逻辑通信，运输层为应用进程之间提供端到端的逻辑通信。 运输层包括面向连接的TCP和无连接的UDP两种运输协议，采用T">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://joscodehua.gitee.io/img/UDP.jpg">
-<meta property="og:image" content="https://joscodehua.gitee.io/img/Checksum.jpg">
-<meta property="og:image" content="https://joscodehua.gitee.io/img/TCPByteStream.jpg">
-<meta property="og:image" content="https://joscodehua.gitee.io/img/Confirm.jpg">
-<meta property="og:image" content="https://joscodehua.gitee.io/img/Channel.jpg">
-<meta property="og:image" content="https://joscodehua.gitee.io/img/ARQ.jpg">
-<meta property="og:image" content="https://joscodehua.gitee.io/img/TCP.jpg">
-<meta property="og:image" content="https://joscodehua.gitee.io/img/Window.jpg">
-<meta property="og:image" content="https://joscodehua.gitee.io/img/SendReceive.jpg">
-<meta property="og:image" content="https://joscodehua.gitee.io/img/SendCache.jpg">
-<meta property="og:image" content="https://joscodehua.gitee.io/img/ReceiveCache.jpg">
-<meta property="og:image" content="https://joscodehua.gitee.io/img/ThreeMessage.jpg">
-<meta property="og:image" content="https://joscodehua.gitee.io/img/CloseConnection.jpg">
+<meta property="og:image" content="https://joscodehua.github.io/img/UDP.jpg">
+<meta property="og:image" content="https://joscodehua.github.io/img/Checksum.jpg">
+<meta property="og:image" content="https://joscodehua.github.io/img/TCPByteStream.jpg">
+<meta property="og:image" content="https://joscodehua.github.io/img/Confirm.jpg">
+<meta property="og:image" content="https://joscodehua.github.io/img/Channel.jpg">
+<meta property="og:image" content="https://joscodehua.github.io/img/ARQ.jpg">
+<meta property="og:image" content="https://joscodehua.github.io/img/TCP.jpg">
+<meta property="og:image" content="https://joscodehua.github.io/img/Window.jpg">
+<meta property="og:image" content="https://joscodehua.github.io/img/SendReceive.jpg">
+<meta property="og:image" content="https://joscodehua.github.io/img/SendCache.jpg">
+<meta property="og:image" content="https://joscodehua.github.io/img/ReceiveCache.jpg">
+<meta property="og:image" content="https://joscodehua.github.io/img/ThreeMessage.jpg">
+<meta property="og:image" content="https://joscodehua.github.io/img/CloseConnection.jpg">
 <meta property="article:published_time" content="2021-07-15T16:00:00.000Z">
 <meta property="article:modified_time" content="2021-07-22T08:51:32.780Z">
 <meta property="article:author" content="十五">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://joscodehua.gitee.io/img/UDP.jpg">
+<meta name="twitter:image" content="https://joscodehua.github.io/img/UDP.jpg">
 
 
-<link rel="canonical" href="https://joscodehua.gitee.io/2021/07/16/blog18/">
+<link rel="canonical" href="https://joscodehua.github.io/2021/07/16/blog18/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://joscodehua.gitee.io/2021/07/16/blog18/","path":"2021/07/16/blog18/","title":"运输层"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://joscodehua.github.io/2021/07/16/blog18/","path":"2021/07/16/blog18/","title":"运输层"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>运输层 | 十五</title>
@@ -209,7 +209,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://joscodehua.gitee.io/2021/07/16/blog18/">
+    <link itemprop="mainEntityOfPage" href="https://joscodehua.github.io/2021/07/16/blog18/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
